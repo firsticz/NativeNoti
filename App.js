@@ -22,6 +22,7 @@ import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 //import firebase from 'react-native-firebase'
 import messaging from '@react-native-firebase/messaging';
+import PushNotification from 'react-native-push-notification';
 import {
   Header,
   LearnMoreLinks,
@@ -34,7 +35,8 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Login from './src/screens/login'
-// const notif = new NotifService();
+import NotificationList from './src/screens/notificationList'
+const notif = new NotifService();
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
 
@@ -82,6 +84,7 @@ function MyTabs() {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Home" component={Login} />
+      <Tab.Screen name="notification" component={NotificationList} />
       <Tab.Screen name="Settings" component={Login} />
     </Tab.Navigator>
   );
@@ -105,39 +108,6 @@ const App = ({ navigation }) => {
     }
   }
 
-  const  checkPermission = async() => {
-    const enabled = await messaging().hasPermission();
-    if (enabled) {
-        getToken();
-    } else {
-        requestPermission();
-    }
-  }
-  
-    //3
-  const  getToken = async () => {
-    let fcmToken = await AsyncStorage.getItem('fcmToken');
-    if (!fcmToken) {
-        fcmToken = await messaging().getToken();
-        if (fcmToken) {
-            // user has a device token
-            console.log(fcmToken);
-            await AsyncStorage.setItem('fcmToken', fcmToken);
-        }
-    }
-  }
-  
-    //2
-  // const requestPermission = async () => {
-  //   try {
-  //       await messaging().requestPermission();
-  //       // User has authorised
-  //       getToken();
-  //   } catch (error) {
-  //       // User has rejected permissions
-  //       console.log('permission rejected');
-  //   }
-  // }
 
   async function registerAppWithFCM() {
     await messaging().registerDeviceForRemoteMessages();
@@ -168,8 +138,41 @@ const App = ({ navigation }) => {
     registerAppWithFCM()
     requestPermission()
 
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage.notification,
+      );
+      Alert.alert(
+        'Notification caused app to open from background state:',
+        JSON.stringify(remoteMessage),
+      );
+    });
+
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          console.log(
+            'Notification caused app to open from quit state:',
+            remoteMessage.notification,
+          );
+          Alert.alert(
+            'Notification caused app to open from quit state:',
+            JSON.stringify(remoteMessage),
+          );
+        }
+      });
+
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      notif.localNotif(remoteMessage.title, remoteMessage.body )
+
+      // PushNotification.localNotification({
+      //   title: 'notification.title',
+      //   message: 'notification.body!',
+      // });
     });
 
     return unsubscribe;
