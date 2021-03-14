@@ -1,9 +1,33 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, ScrollView, ActivityIndicator, View, Text } from 'react-native'
 import { ThemeProvider, Button, Input, Image } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import auth from '@react-native-firebase/auth';
+import { AuthContext  } from '../context/firebaseContext';
 
 const Login = (props) => {
+	const { user } = useContext(AuthContext);
+
+	const onSignIn = () => {
+		auth()
+		.signInWithEmailAndPassword('ttt@mail.com', 'tttttt')
+		.then(() => {
+			console.log('User account created & signed in!');
+			//props.navigation.navigate('home')
+		})
+		.catch(error => {
+			if (error.code === 'auth/email-already-in-use') {
+				console.log('That email address is already in use!');
+			}
+
+			if (error.code === 'auth/invalid-email') {
+				console.log('That email address is invalid!');
+			}
+			props.navigation.navigate('login')
+
+			console.error(error);
+		});
+	}
 
 	return(
 		<ThemeProvider theme={theme}>
@@ -37,7 +61,7 @@ const Login = (props) => {
 				<Button
 					buttonStyle={{backgroundColor: '#4db6ac'}}
 					title='Sign in'
-					onPress={() => props.navigation.navigate('home')}
+					onPress={() => onSignIn()}
 				/>
 			</ScrollView>
 		</ThemeProvider>

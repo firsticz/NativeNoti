@@ -68,6 +68,7 @@ export default class NotifService {
   }
 
   localNotif(title, message, soundName) {
+    console.log('title:' + title);
     this.lastId++;
     PushNotification.localNotification({
       /* Android Only Properties */

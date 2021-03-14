@@ -2,24 +2,33 @@ import React from 'react'
 import { StyleSheet, ScrollView, ActivityIndicator, View, Text } from 'react-native'
 import { ThemeProvider, Button, Input, Image } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { ListItem } from 'react-native-elements'
+import auth from '@react-native-firebase/auth';
 
 
 
 
-const NotificationList = () => {
 
+
+const Setting = (props) => {
+
+  const SignOut = () => {
+    auth().signOut().then(() => {
+      console.log('User signed out!')
+    }
+    
+    );
+  }
  
  
   return(
     <ThemeProvider theme={theme}>
       <ScrollView style={styles.container}>
-        <ListItem>
-					<ListItem.Content>
-						<ListItem.Title>Title</ListItem.Title>
-						<ListItem.Subtitle>Subtitle</ListItem.Subtitle>
-					</ListItem.Content>
-				</ListItem>
+        <Text>setting </Text>
+        <Button
+					buttonStyle={{backgroundColor: '#4db6ac'}}
+					title='Sign Out'
+					onPress={() => SignOut()}
+				/>
       </ScrollView>
     </ThemeProvider>
   )
@@ -49,4 +58,4 @@ const styles = StyleSheet.create({
 	}
 })
 
-export default NotificationList
+export default Setting
