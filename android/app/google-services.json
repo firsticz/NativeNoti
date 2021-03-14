@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "311857942042",
+    "project_id": "firsticz",
+    "storage_bucket": "firsticz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311857942042:android:043a7f8e8992fcbf974ba3",
+        "android_client_info": {
+          "package_name": "com.nativenoti"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "311857942042-6k1u2fa08fsfmauibdspcsa3j3v7knhs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMRE3pjOfUqfNAqdBZY7ykYRCMOVIy8Ck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "311857942042-6k1u2fa08fsfmauibdspcsa3j3v7knhs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "311857942042-j67spnp0fpbf53l4fe4n4l6b7bsjbduf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.firsticz.parkrun"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
